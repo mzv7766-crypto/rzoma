@@ -37,15 +37,14 @@ main{position:relative;z-index:1}
 .arch-wrap{perspective:800px;will-change:transform}
 .arch{width:min(230px,58vw);aspect-ratio:3/4;max-width:100%;position:relative;border-radius:999px 999px 6px 6px;padding:5px;
   background:linear-gradient(160deg,var(--gold-hi),var(--gold) 40%,var(--gold-lo) 75%,var(--gold));
-  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .08s linear}
+}
 .arch img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;border-radius:999px 999px 3px 3px}
 .arch svg{position:absolute;inset:-12px;width:calc(100% + 24px);height:calc(100% + 24px);overflow:visible}
 .arch svg path{fill:none;stroke:var(--gold);stroke-width:1;vector-effect:non-scaling-stroke}
 .arch svg path.b{stroke:var(--hair)}
-h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,12.5vw,86px);line-height:1;margin:30px 0 0;display:flex;flex-direction:column;align-items:center;gap:.04em}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,10.5vw,80px);line-height:1.05;margin:30px 0 0;display:flex;flex-wrap:wrap;justify-content:center;column-gap:.28em}
 h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}
 h1 .u{display:inline-block;background:linear-gradient(100deg,var(--gold-lo) 0%,var(--gold) 30%,#FFF4D2 45%,var(--gold) 60%,var(--gold-lo) 100%);background-size:250% 100%;background-position:0 0;-webkit-background-clip:text;background-clip:text;color:transparent}
-h1 .mid{font-size:.55em;letter-spacing:.06em}
 .sub{margin:14px 0 0;color:var(--mist);letter-spacing:.04em}
 .cue{margin-top:28px;width:1px;height:46px;background:linear-gradient(var(--gold),transparent)}
 
@@ -118,19 +117,19 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
 .call-zone{position:relative;display:inline-grid;place-items:center;padding:30px}
 .call{position:relative;z-index:2;appearance:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:12px;font:600 19px var(--body);color:var(--night);
   background:linear-gradient(160deg,var(--gold-hi),var(--gold) 55%,var(--gold-lo));padding:16px 34px;border-radius:999px;
-  transform:translate(var(--mx,0px),var(--my,0px));box-shadow:0 10px 30px -10px rgba(201,165,90,.6)}
+  box-shadow:0 10px 30px -10px rgba(201,165,90,.6);transition:background .35s ease,color .35s ease,box-shadow .35s ease}
+.call:hover,.call:active,.calling .call{background:var(--ivory);color:var(--wine);box-shadow:0 10px 34px -8px rgba(239,232,218,.45)}
 .call:focus-visible{outline:2px solid var(--gold-hi);outline-offset:4px}
 .call svg{width:22px;height:22px}
 .ring{position:absolute;inset:50% auto auto 50%;width:120px;height:120px;margin:-60px 0 0 -60px;border:1.5px solid var(--gold);border-radius:50%;opacity:0;pointer-events:none;z-index:1}
 .calling .ring{animation:ring 1.4s cubic-bezier(.2,.6,.2,1) infinite}
 .calling .ring:nth-child(2){animation-delay:.35s}.calling .ring:nth-child(3){animation-delay:.7s}
 @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
-.calling .call svg{animation:wiggle .5s ease-in-out infinite}
-@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-16deg)}75%{transform:rotate(16deg)}}
 .calling .num .d{color:var(--mist)}
 .calling .num .d.lit{color:var(--gold-hi);text-shadow:0 0 18px rgba(241,219,160,.6)}
 .alt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
-.btn{font:400 16px var(--body);padding:10px 22px;border-radius:2px;cursor:pointer;text-decoration:none;border:1px solid var(--gold);background:transparent;color:var(--gold-hi)}
+.btn{font:400 16px var(--body);padding:10px 22px;border-radius:2px;cursor:pointer;text-decoration:none;border:1px solid var(--gold);background:transparent;color:var(--gold-hi);transition:background .3s ease,color .3s ease}
+.btn:hover,.btn:active,.btn.done{background:var(--gold);color:var(--night)}
 .btn:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
 .sig{font-family:var(--rashi);text-align:center;color:var(--gold);font-size:15px;padding-block:34px calc(40px + env(safe-area-inset-bottom,0px));margin:0}
 
@@ -164,7 +163,7 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
       </div>
       <h1 class="layer-move" data-r="10" id="name">
         <span class="ln"><span class="u">משה</span></span>
-        <span class="ln"><span class="u mid">יוסף</span></span>
+        <span class="ln"><span class="u">יוסף</span></span>
         <span class="ln"><span class="u">זיידה</span></span>
       </h1>
       <p class="sub">ביתר עילית</p>
@@ -271,10 +270,6 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
     u.animate([{backgroundPosition:'100% 0'},{backgroundPosition:'0 0'}],{duration:2000,easing:'ease-in-out',delay:2300+i*120,fill:'backwards'});
   });
 
-  /* 9 tilt on portrait */
-  var arch=document.getElementById('arch'), tx=0,ty=0,cx=0,cy=0;
-  addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=arch.getBoundingClientRect(); tx=clamp((e.clientX-(r.left+r.width/2))/r.width,-1,1)*9; ty=-clamp((e.clientY-(r.top+r.height/2))/r.height,-1,1)*9; });
-
   /* 7 count age */
   var age=document.getElementById('age'), counted=false;
   var io=new IntersectionObserver(function(es){es.forEach(function(e){
@@ -299,7 +294,6 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
     var hp=clamp(-hero.getBoundingClientRect().top/hero.offsetHeight,0,1);
     layers.forEach(function(l){l.style.transform='translate3d(0,'+(+l.dataset.r*hp*3)+'px,0)'});
     /* tilt easing */
-    cx+=(tx-cx)*.12; cy+=(ty-cy)*.12; arch.style.setProperty('--ry',cx.toFixed(2)+'deg'); arch.style.setProperty('--rx',cy.toFixed(2)+'deg');
     /* pin: two lines crossfade */
     var tp=prog(today); tBar.style.setProperty('--p',tp.toFixed(3));
     var a=1-clamp((tp-.38)/.16,0,1), b=clamp((tp-.46)/.16,0,1);
@@ -319,15 +313,9 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
   stamps.forEach(function(s){s.style.setProperty('--o',0)});
   requestAnimationFrame(frame);
 
-  /* 11 spotlight + 10 magnet */
-  var contact=document.getElementById('contact'), call=document.getElementById('call'), mx=0,my=0,gx=0,gy=0;
-  contact.addEventListener('pointermove',function(e){
-    var r=contact.getBoundingClientRect(); contact.style.setProperty('--sx',(e.clientX-r.left)+'px'); contact.style.setProperty('--sy',(e.clientY-r.top)+'px');
-    if(e.pointerType!=='mouse')return; var b=call.getBoundingClientRect(), dx=e.clientX-(b.left+b.width/2), dy=e.clientY-(b.top+b.height/2);
-    if(Math.hypot(dx,dy)<180){gx=dx*.28;gy=dy*.28}else{gx=gy=0}
-  });
-  contact.addEventListener('pointerleave',function(){gx=gy=0});
-  (function mag(){mx+=(gx-mx)*.15;my+=(gy-my)*.15;call.style.setProperty('--mx',mx.toFixed(1)+'px');call.style.setProperty('--my',my.toFixed(1)+'px');requestAnimationFrame(mag)})();
+  /* 11 spotlight */
+  var contact=document.getElementById('contact');
+  contact.addEventListener('pointermove',function(e){var r=contact.getBoundingClientRect();contact.style.setProperty('--sx',(e.clientX-r.left)+'px');contact.style.setProperty('--sy',(e.clientY-r.top)+'px')});
 
   /* gold dust */
   var c=document.getElementById('dust'),x=c.getContext('2d'),W,H,P=[],d=Math.min(devicePixelRatio||1,2);
@@ -353,7 +341,7 @@ h1 .mid{font-size:.55em;letter-spacing:.06em}
   function setupCopy(){
     var b=document.getElementById('copy');
     b.addEventListener('click',function(){
-      function done(){b.textContent='המספר הועתק';setTimeout(function(){b.textContent='העתקת המספר'},2000)}
+      function done(){b.textContent='המספר הועתק';b.classList.add('done');setTimeout(function(){b.textContent='העתקת המספר';b.classList.remove('done')},2000)}
       function sel(){var r=document.createRange();r.selectNodeContents(numEl);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='המספר מסומן'}
       try{navigator.clipboard.writeText('0547580878').then(done,sel)}catch(e){sel()}
     });
